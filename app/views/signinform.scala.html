@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+@(clientID: String)(implicit flash: play.api.mvc.Flash)
 
-</body>
-</html>
+
+<a class="btn btn-large" href="https://github.com/login/oauth/authorize?client_id=@clientID">Login with GitHub</a>

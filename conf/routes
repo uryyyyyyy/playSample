@@ -3,32 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.HtmlController.index()
-GET     /async/                           controllers.async.HtmlController.index()
-
-GET     /json/get                           controllers.JsonController.get()
-POST    /json/post                           controllers.JsonController.post()
-
-GET     /async/json/get                           controllers.async.JsonController.get()
-POST    /async/json/post                           controllers.async.JsonController.post()
-
-GET     /query/query                           controllers.QueryParameterController.getWithQuery(str: String)
-GET     /query/params/:id                           controllers.QueryParameterController.getWithParams(id: Int)
-
-GET     /async/query/query                           controllers.async.QueryParameterController.getWithQuery(str: String)
-GET     /async/query/params/:id                           controllers.async.QueryParameterController.getWithParams(id: Int)
-
-GET     /file/download                           controllers.FileController.download()
-POST    /file/upload                           controllers.FileController.upload()
-
-GET     /async/file/download                           controllers.async.FileController.download()
-#POST    /async/file/upload                           controllers.async.FileController.upload()
-
-GET     /chunk/download                           controllers.ChunkController.download()
-POST    /chunk/upload                           controllers.ChunkController.upload()
-
-
-GET     /logic/di                           controllers.DIController.getUsers()
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET      /account/signin                              controllers.Application.showSignIn
+# サインアウト処理
+GET      /account/signout                             controllers.Application.signOut
+# GitHubからのコールバックURL(はじめにGitHubで設定したものと同じ)
+GET      /githubauth/callback                         controllers.Application.callBackGitHub(code)

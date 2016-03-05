@@ -3,6 +3,7 @@ package model
 import java.io.File
 
 import com.typesafe.config.ConfigFactory
+import model.TwitterAuthConfig.ConfigurationError
 import play.api.Configuration
 
 trait TwitterAuthConfig {

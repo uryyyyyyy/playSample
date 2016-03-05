@@ -1,0 +1,11 @@
+@(clientID: String, opt: Option[String])(implicit flash: play.api.mvc.Flash)
+
+@if(opt.isDefined) {
+<h1>@opt.get</h1>
+} else {
+<h1>not login</h1>
+}
+
+<a class="btn btn-large" href="https://accounts.google.com/o/oauth2/auth?client_id=@clientID&redirect_uri=http://localhost:9000/twitter/callback&scope=https://www.googleapis.com/auth/drive&response_type=code&approval_prompt=force&access_type=offline">Login with Twitter</a>
+
+<a href="/twitter/signout">sign out</a>

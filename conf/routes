@@ -30,5 +30,16 @@ POST    /chunk/upload                           controllers.ChunkController.uplo
 
 GET     /logic/di                           controllers.DIController.getUsers()
 
+
+# OAuth
+
+GET      /twitter/signin                              controllers.oauth.TwitterOauthController.showSignIn
+GET      /twitter/signout                             controllers.oauth.TwitterOauthController.signOut
+GET      /twitter/callback                         controllers.oauth.TwitterOauthController.callBackGitHub(code:String)
+
+GET      /github/signin                              controllers.oauth.GithubOauthController.showSignIn
+GET      /github/signout                             controllers.oauth.GithubOauthController.signOut
+GET      /github/callback                         controllers.oauth.GithubOauthController.callBackGitHub(code:String)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

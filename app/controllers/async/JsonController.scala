@@ -6,27 +6,35 @@ import javax.inject.{Inject, _}
 import akka.actor.{ActorSystem, Props}
 import akka.pattern.ask
 import akka.util.Timeout
+import model.MyObj
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 @Singleton
 class JsonController @Inject() (system: ActorSystem) extends Controller {
 
   val helloActor = system.actorOf(Props[JsonActor], "hello-actor")
+  implicit val timeout = Timeout(5000, TimeUnit.MILLISECONDS)
 
-  def get() = Action.async {
-    implicit val timeout = Timeout(5000, TimeUnit.MILLISECONDS)
-    (helloActor ? "hello" ).mapTo[String].map { message =>
-      Ok(message)
+  def get() = Action.async { request =>
+    (helloActor ? "hello" ).mapTo[Seq[MyObj]].map { message =>
+      Ok(Json.toJson(message))
     }
   }
 
-  //TODO
-  def post() = Action.async {
-    implicit val timeout = Timeout(5000, TimeUnit.MILLISECONDS)
-    (helloActor ? "hello" ).mapTo[String].map { message =>
-      Ok(message)
+  def post() = Action.async { request =>
+    val myObjOpt = for{
+      json <- request.body.asJson
+      myObj <- Json.fromJson[MyObj](json).asOpt
+    }yield myObj
+    myObjOpt match{
+      case None => Future.successful(BadRequest(Json.toJson("illegal")))
+      case Some(o) => (helloActor ? o ).mapTo[MyObj].map { message =>
+        Ok(Json.toJson(message))
+      }
     }
   }
 }

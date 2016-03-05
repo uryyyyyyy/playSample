@@ -10,14 +10,14 @@ import model.MyObj
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import scala.concurrent.Future
 
 @Singleton
 class JsonController @Inject() (system: ActorSystem) extends Controller {
 
-  val helloActor = system.actorOf(Props[JsonActor], "hello-actor")
-  implicit val timeout = Timeout(5000, TimeUnit.MILLISECONDS)
+  val helloActor = system.actorOf(Props[JsonActor])
+  implicit val timeout = Timeout(1000, TimeUnit.MILLISECONDS)
 
   def get() = Action.async { request =>
     (helloActor ? "hello" ).mapTo[Seq[MyObj]].map { message =>

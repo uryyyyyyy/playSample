@@ -4,7 +4,7 @@ import java.io.{File, PrintWriter}
 
 import play.api.mvc.{Action, Controller}
 
-class FileController extends Controller {
+class logicController extends Controller {
 
   def download() = Action {
     val tempFile = File.createTempFile("prefix_", ".csv")

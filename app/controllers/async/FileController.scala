@@ -7,12 +7,8 @@ import javax.inject.{Inject, _}
 import akka.actor.{ActorSystem, Props}
 import akka.pattern.ask
 import akka.util.Timeout
-import model.MyObj
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
-
-import scala.concurrent.Future
 
 @Singleton
 class FileController @Inject()(system: ActorSystem) extends Controller {

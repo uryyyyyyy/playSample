@@ -1,18 +1,17 @@
 package controllers
 
-import java.io.{File, PrintWriter}
 import javax.inject.{Inject, Singleton}
 
-import akka.actor.ActorSystem
-import play.api.libs.ws.WSClient
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
-import service.impl.WSServiceImpl
 import service.spec.WSService
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 @Singleton
-class DIController @Inject()(ws: WSService) extends Controller {
+class DIController @Inject()(service: WSService) extends Controller {
+  //this inject target is configured by modules.*DIModule
 
-  def download() = Action {
-    Ok(ws.ok())
+  def getUsers() = Action.async {
+    service.getUsers().map(v => Ok(Json.toJson(v)))
   }
 }

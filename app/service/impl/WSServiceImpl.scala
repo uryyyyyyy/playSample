@@ -2,14 +2,17 @@ package service.impl
 
 import javax.inject.{Inject, Singleton}
 
-import play.api.libs.ws.WSClient
+import dao.spec.QiitaClient
+import model.qiita.QiitaUser
 import service.spec.WSService
 
-@Singleton
-class WSServiceImpl @Inject()(ws: WSClient) extends WSService{
+import scala.concurrent.Future
 
-  def ok():String ={
-    ws.toString
+@Singleton
+class WSServiceImpl @Inject()(client: QiitaClient) extends WSService{
+
+  def getUsers():Future[Seq[QiitaUser]] ={
+    client.getUsers()
   }
 
 }

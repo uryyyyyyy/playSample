@@ -1,13 +1,13 @@
 package modules
 
 import com.google.inject.AbstractModule
-import service.impl.WSServiceImpl
+import service.mock.WSServiceMock
 import service.spec.WSService
 
-class ProductionDIModule extends AbstractModule {
+class ServiceDIModuleMock extends AbstractModule {
   def configure() = {
 
     bind(classOf[WSService])
-      .to(classOf[WSServiceImpl])
+      .to(classOf[WSServiceMock])
   }
 }

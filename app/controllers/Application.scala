@@ -2,12 +2,10 @@ package controllers
 
 import javax.inject.Inject
 
-import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.{Action, Controller}
 import play.libs.Json.toJson
 
-import scala.collection.JavaConverters.mapAsJavaMapConverter
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -24,35 +22,40 @@ class Application @Inject()(ws: WSClient) extends Controller {
 
   def callBackGitHub(code: String) = Action { implicit request =>
 
+    println("start")
     // Play 標準の Json ライブラリである Jackson を使って、リクエストボディを作成します。
     // Jackson は Java のライブラリのため、toJson の引数に Map を使うときは
     // Java の Map に変換しています。
-    val postBodyMap = Map(
+    import play.api.libs.json._
+    val postBodyJson = Json.obj(
       "client_id" -> toJson(clientID),
       "client_secret" -> toJson(clientSecret),
       "code" -> toJson(code)
-    ).asJava
-
-    val postBodyJson = toJson(postBodyMap)
-    Logger.debug("postBody=" + postBodyJson)
+    )
+    println("postBody=" + postBodyJson)
 
     val responce = ws.url("https://github.com/login/oauth/access_token")
+      .withHeaders("Content-Type" ->  "application/json")
       .withHeaders("Accept" ->  "application/json")
-      .post(postBodyJson)
+      .post(postBodyJson.toString)
     val ss = Await.result(responce, Duration.Inf)
-    println("response=" + ss.json)
 
     // ログインする GitHub ユーザの情報を取得するためのアクセストークンが取得できました。
     println(ss.json)
+    val accessToken = (ss.json \ "access_token").asOpt[String].get
+    println(accessToken)
 
-    Ok
+    // アクセストークンを使って GitHub にアクセスし、ユーザー情報を取得します。
+    val sss = ws.url("https://api.github.com/user")
+      .withQueryString("access_token" ->  accessToken)
+      .withHeaders("Accept" ->  "application/json")
+      .get
+    val user = Await.result(sss, Duration.Inf).json
+    println(user)
 
-    //    // アクセストークンを使って GitHub にアクセスし、ユーザー情報を取得します。
-    //    val user = ws.url("https://api.github.com/user")
-    //      .setQueryParameter("access_token", accessToken)
-    //      .get
-    //      .get.asJson
-    //    Logger.debug("userJson=" + user)
+    Ok((user \ "login").asOpt[String].get)
+
+
 
     // 任意の必要項目を取得し、GitHubUser クラスに変換しています。
     //    val githubUser = GitHubUser(

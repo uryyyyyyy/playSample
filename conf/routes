@@ -7,4 +7,4 @@ GET      /account/signin                              controllers.Application.sh
 # サインアウト処理
 GET      /account/signout                             controllers.Application.signOut
 # GitHubからのコールバックURL(はじめにGitHubで設定したものと同じ)
-GET      /githubauth/callback                         controllers.Application.callBackGitHub(code)
+GET      /callback                         controllers.Application.callBackGitHub(code:String)

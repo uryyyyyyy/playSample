@@ -5,8 +5,7 @@ organization := "com.github.uryyyyyyy"
 scalaVersion := "2.11.8"
 
 resolvers ++= Seq(
-  "Sonatype snapshots repository" at "https://oss.sonatype.org/content/repositories/snapshots/",
-  "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
+  "Sonatype snapshots repository" at "https://oss.sonatype.org/content/repositories/snapshots/"
 )
 
 libraryDependencies ++= Seq(
@@ -18,8 +17,7 @@ libraryDependencies ++= Seq(
   "jp.t2v" %% "stackable-controller" % "0.6.0",
   "jp.t2v" %% "play2-auth"        % "0.14.2",
   "jp.t2v" %% "play2-auth-social" % "0.14.2",
-  "jp.t2v" %% "play2-auth-test"   % "0.14.2" % "test",
-  play.sbt.Play.autoImport.cache
+  "jp.t2v" %% "play2-auth-test"   % "0.14.2" % "test"
 )
 
 routesGenerator := InjectedRoutesGenerator
